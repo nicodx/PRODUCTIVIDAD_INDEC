@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Medición de la Productividad 2016-2025 y Stock de Capital 2004-2025 · INDEC DT 52</title>
+  
+  <!-- Google Fonts: Bricolage Grotesque (Headings & Metrics) + Source Serif 4 (Editorial Body) + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  
+  <!-- KaTeX for crisp mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <style>
+    :root {
+      color-scheme: light;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      
+      --bg: #F5F7FA;
+      --sf: #FFFFFF;
+      --ink: #16233B;
+      --mut: #5B6B82;
+      --ln: #DCE3EC;
+      
+      --k: #1F5FA8;     /* Capital / Primary Blue */
+      --k-light: #EBF3FC;
+      --l: #0E8A8A;     /* Labor / Teal Green */
+      --l-light: #E6F7F7;
+      --p: #D2552F;     /* PTF / Terracotta Accent */
+      --p-light: #FDF1ED;
+      --hl: #FFE9A8;    /* Warm Yellow Highlighter */
+      
+      --sans: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+      --ser: 'Source Serif 4', Georgia, serif;
+      --mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(22, 35, 59, 0.05);
+      --shadow-md: 0 4px 8px rgba(22, 35, 59, 0.07);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 30px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 17px/1.7 var(--ser);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Reading Progress Bar */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--k), var(--l), var(--p));
+      z-index: 1000;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    /* Centered Grid Wrapper */
+    .wrap {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      max-width: 1260px;
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 0 40px rgba(0,0,0,0.03);
+      min-height: 100vh;
+    }
+
+    /* Sticky Navigation Sidebar */
+    nav {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 32px 20px;
+      border-right: 1px solid var(--ln);
+      background: var(--sf);
+      font-family: var(--sans);
+      overflow-y: auto;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: block;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--ln);
+    }
+    .nav-brand b {
+      display: block;
+      font-size: 15px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+    }
+    .nav-brand span {
+      font-weight: 400;
+      color: var(--mut);
+      font-size: 13px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 8px 12px;
+      border-left: 3px solid transparent;
+      color: var(--mut);
+      text-decoration: none;
+      font-size: 14.5px;
+      font-weight: 500;
+      border-radius: 0 6px 6px 0;
+      transition: all 0.15s ease;
+    }
+    .nav-links a:hover {
+      color: var(--ink);
+      background: var(--bg);
+    }
+    .nav-links a.on {
+      color: var(--ink);
+      border-color: var(--p);
+      background: var(--bg);
+      font-weight: 700;
+    }
+
+    .nav-actions {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--ln);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--ln);
+      background: var(--sf);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: var(--bg);
+      border-color: var(--mut);
+    }
+
+    /* Main Content Area */
+    main {
+      padding: 44px 52px 100px;
+      min-width: 0;
+      background: var(--bg);
+    }
+
+    section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--ln);
+    }
+    section:first-of-type {
+      padding-top: 0;
+    }
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--sans);
+      line-height: 1.15;
+      color: var(--ink);
+      margin: 0 0 16px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 4.4vw, 50px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      max-width: 22ch;
+    }
+
+    h2 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 28px;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      max-width: 72ch;
+      margin: 0 0 16px;
+    }
+
+    .lead {
+      font-size: 20px;
+      line-height: 1.55;
+      color: var(--mut);
+      max-width: 66ch;
+      margin-bottom: 20px;
+    }
+
+    .font-mono {
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    /* Claude's signature text highlighter */
+    mark {
+      background: linear-gradient(transparent 38%, var(--hl) 38%);
+      color: inherit;
+      padding: 0 4px;
+      border-radius: 2px;
+    }
+
+    /* Key Metric Cards (KPIs) */
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .kpi {
+      background: var(--sf);
+      border: 1px solid var(--ln);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      font-family: var(--sans);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .kpi:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .kpi strong {
+      display: block;
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .kpi strong.positive { color: var(--l); }
+    .kpi strong.negative { color: var(--p); }
+    .kpi strong.neutral { color: var(--k); }
+    .kpi span {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mut);
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+
+    /* Content Cards / Containers */
+    .box {
+      background: var(--sf);
+      border: 1px solid var(--ln);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      margin: 22px 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .box h3 {
+      margin-top: 0;
+    }
+
+    .ch {
+      position: relative;
+      height: 340px;
+      width: 100%;
+    }
+    .ch.t {
+      height: 420px;
+    }
+    .cap {
+      font: 13px/1.4 var(--sans);
+      color: var(--mut);
+      margin-top: 10px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    /* Claude's Terracotta Callout Note */
+    .note {
+      border-left: 4px solid var(--p);
+      background: rgba(210, 85, 47, 0.04);
+      padding: 10px 16px 10px 18px;
+      margin: 18px 0;
+      border-radius: 0 8px 8px 0;
+      max-width: 72ch;
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+    .note b {
+      color: var(--p);
+      font-family: var(--sans);
+    }
+
+    .note-info {
+      border-left: 4px solid var(--k);
+      background: rgba(31, 95, 168, 0.04);
+    }
+    .note-info b {
+      color: var(--k);
+    }
+
+    /* Interactive Details / Accordion */
+    details {
+      background: var(--sf);
+      border: 1px solid var(--ln);
+      border-radius: var(--radius-md);
+      margin: 10px 0;
+      padding: 14px 18px;
+      transition: all 0.2s;
+    }
+    details[open] {
+      box-shadow: var(--shadow-sm);
+      border-color: #cbd5e1;
+    }
+    summary {
+      cursor: pointer;
+      font: 700 16.5px var(--sans);
+      color: var(--ink);
+      user-select: none;
+      outline: none;
+    }
+    details p {
+      margin: 12px 0 0;
+      font-size: 15.5px;
+      color: var(--mut);
+    }
+
+    /* Math Formula Block */
+    .formula-box {
+      background: var(--sf);
+      border: 1px solid var(--ln);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 16px 0;
+      text-align: center;
+      font-size: 18px;
+    }
+    .formula-explanation {
+      font: 13px/1.5 var(--sans);
+      color: var(--mut);
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    /* Tables */
+    .tw {
+      overflow-x: auto;
+      margin: 18px 0;
+      border: 1px solid var(--ln);
+      border-radius: var(--radius-md);
+      background: var(--sf);
+    }
+
+    table {
+      border-collapse: collapse;
+      font: 13.5px var(--sans);
+      width: 100%;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--ln);
+      text-align: right;
+    }
+
+    th {
+      font-weight: 700;
+      color: var(--ink);
+      background: #fafbfc;
+      font-size: 12.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    tr.level-0 { font-weight: 800; background: #f1f5f9; color: var(--ink); }
+    tr.level-1 { font-weight: 700; background: #fafbfc; color: var(--k); }
+    tr.level-2 { font-weight: 600; color: var(--ink); }
+    tr.level-3 { color: var(--mut); }
+    tr.level-4 { color: #8c9ba5; font-style: italic; }
+
+    /* Method Badges */
+    .tag {
+      display: inline-block;
+      font: 600 11.5px var(--sans);
+      border-radius: 4px;
+      padding: 1px 7px;
+      color: var(--mut);
+      border: 1px solid var(--ln);
+      background: var(--bg);
+    }
+    .tag-blue { background: #e0f2fe; color: var(--k); border-color: #bae6fd; }
+    .tag-amber { background: #fef3c7; color: #b45309; border-color: #fde68a; }
+    .tag-purple { background: #f3e8ff; color: #7e22ce; border-color: #e9d5ff; }
+    .tag-green { background: #dcfce7; color: var(--l); border-color: #bbf7d0; }
+
+    /* Interactive Table Tabs */
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--ln);
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+    .t-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      font: 600 13.5px var(--sans);
+      color: var(--mut);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      border-radius: 6px 6px 0 0;
+      white-space: nowrap;
+    }
+    .t-btn:hover { color: var(--ink); background: #f1f5f9; }
+    .t-btn.active {
+      color: var(--k);
+      border-bottom-color: var(--k);
+      background: var(--k-light);
+    }
+
+    .t-pane { display: none; }
+    .t-pane.active { display: block; }
+
+    .search-input {
+      padding: 7px 12px;
+      border: 1px solid var(--ln);
+      border-radius: 6px;
+      font: 13.5px var(--sans);
+      background: var(--sf);
+      color: var(--ink);
+      outline: none;
+      width: 220px;
+    }
+    .search-input:focus {
+      border-color: var(--k);
+    }
+
+    /* References */
+    .ref {
+      font-size: 15px;
+      line-height: 1.55;
+      margin: 0 0 10px;
+      padding-left: 1.5em;
+      text-indent: -1.5em;
+      max-width: 80ch;
+    }
+    .ref a {
+      color: var(--k);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .ref a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 880px) {
+      .wrap { display: block; }
+      nav {
+        position: sticky;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 12px 16px;
+        border-right: 0;
+        border-bottom: 1px solid var(--ln);
+        white-space: nowrap;
+      }
+      .nav-brand, .nav-actions { display: none; }
+      .nav-links { flex-direction: row; }
+      .nav-links a { border-left: none; border-bottom: 3px solid transparent; padding: 6px 10px; }
+      .nav-links a.on { border-color: var(--p); }
+      main { padding: 24px 20px 60px; }
+      .ch { height: 290px; }
+    }
+
+    @media print {
+      nav, #progress-bar, .nav-actions, .t-btn, .search-input { display: none !important; }
+      .wrap { display: block; max-width: 100%; box-shadow: none; }
+      main { padding: 0; }
+      section { page-break-inside: avoid; }
+      body { background: #fff; font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <div class="wrap">
+    
+    <!-- STICKY NAV -->
+    <nav id="nav">
+      <div>
+        <div class="nav-brand">
+          <b>INDEC · Documento de Trabajo Nº 52</b>
+          <span>Octubre de 2026 · Dirección de Cuentas Nacionales</span>
+        </div>
+        <div class="nav-links">
+          <a href="#resumen" class="on">Resumen Ejecutivo</a>
+          <a href="#conceptos">Conceptos clave</a>
+          <a href="#metodo">Método de Valuación</a>
+          <a href="#ptf">Productividad (PTF)</a>
+          <a href="#stock">Stock de Capital</a>
+          <a href="#activos">Apertura por Activos</a>
+          <a href="#tablas">Series y Tablas</a>
+          <a href="#lectura">Lectura Crítica</a>
+          <a href="#refs">Referencias Académicas</a>
+        </div>
+      </div>
+      
+      <div class="nav-actions">
+        <button class="btn-action" onclick="window.print()">
+          🖨️ Imprimir / Guardar PDF
+        </button>
+        <div style="font-size:11.5px; color:var(--mut); text-align:center; margin-top:4px;">
+          Consultor: Dr. Ariel Coremberg
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+      <!-- SECTION 1: RESUMEN EJECUTIVO -->
+      <section id="resumen">
+        <p class="lead" style="margin-bottom:8px; font-weight:600; color:var(--k);">
+          Medición de la productividad 2016-2025 y el stock de capital 2004-2025 de la República Argentina. Activos fijos.
+        </p>
+        <h1>Más capital y más horas, mismo producto</h1>
+        <p class="lead">
+          Por primera vez el INDEC publica la contabilidad exhaustiva del crecimiento económico y la <mark>productividad total de los factores (PTF)</mark>, 
+          actualizando el stock de capital (discontinuado desde 2006) y alineándolo al nuevo <mark>SCN 2025</mark>. 
+          Entre 2016 y 2025 el producto se estancó mientras los factores continuaron creciendo: la PTF retrocedió un <mark>−0,9% promedio anual</mark>. 
+          En 2025 se produjo un quiebre de tendencia positivo.
+        </p>
+
+        <!-- KPI Grid -->
+        <div class="kpis">
+          <div class="kpi">
+            <strong class="positive">3,6%</strong>
+            <span>VAB a precios básicos en 2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="positive">+2,8 p.p.</strong>
+            <span>Aporte de la PTF en 2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="positive">+3,3%</strong>
+            <span>Productividad laboral en 2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="negative">−0,9%</strong>
+            <span>PTF, promedio anual 2016-2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="neutral">1,5%</strong>
+            <span>Crecimiento del stock de capital 2025</span>
+          </div>
+          <div class="kpi">
+            <strong>92,5</strong>
+            <span>Índice PTF 2025 (2016=100)</span>
+          </div>
+        </div>
+
+        <!-- Chart 1: Fuentes del Crecimiento -->
+        <div class="box">
+          <h3>Fuentes del crecimiento económico, índice 2016=100</h3>
+          <div class="ch t"><canvas id="c1"></canvas></div>
+          <p class="cap">
+            Fuente: INDEC, Cuadro 12. VAB a precios básicos, Servicios de Capital (K), Servicios Laborales (L en horas) y PTF. 2024 provisorio, 2025 preliminar. Tocá la leyenda para alternar series.
+          </p>
+        </div>
+
+        <p>
+          El stock de capital a precios constantes de 2004 pasó de 1.247.343 a <mark>2.127.939 millones de pesos</mark> entre 2004 y 2025 (+1,5% en 2025). 
+          A precios corrientes de 2024 totaliza <mark>$1.727.339 millones</mark> (1.727 billones), de los cuales el <strong>82,8%</strong> se estimó mediante el método de <strong>Valuación Hedónica Estratificada (VH)</strong>.
+        </p>
+
+        <!-- Breakdown Grid of 2025 Stock -->
+        <div class="grid2">
+          <div class="box" style="margin:0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; font-family:var(--sans); color:var(--k);">🏠 Viviendas</span>
+              <span class="tag tag-blue">+1,4% en 2025</span>
+            </div>
+            <div style="font-size:24px; font-weight:800; font-family:var(--sans); margin:6px 0;">641.962 M$ 2004</div>
+            <p style="font-size:14.5px; color:var(--mut); margin:0;">
+              30,2% del stock de capital. Basado en el Censo 2022 (17,8M unidades) y precios hedónicos de alquiler netos de la tierra urbana.
+            </p>
+          </div>
+
+          <div class="box" style="margin:0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; font-family:var(--sans); color:var(--l);">🏢 Otros Edificios y Estructuras</span>
+              <span class="tag tag-green">+0,2% en 2025</span>
+            </div>
+            <div style="font-size:24px; font-weight:800; font-family:var(--sans); margin:6px 0;">807.579 M$ 2004</div>
+            <p style="font-size:14.5px; color:var(--mut); margin:0;">
+              38,0% del stock. Incluye Edificación no residencial privada (169.610 M), Infraestructura empresas (284.067 M) e Infraestructura gobierno general (353.901 M).
+            </p>
+          </div>
+
+          <div class="box" style="margin:0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; font-family:var(--sans); color:var(--p);">🚛 Equipo de Transporte</span>
+              <span class="tag tag-amber">+6,8% en 2025</span>
+            </div>
+            <div style="font-size:24px; font-weight:800; font-family:var(--sans); margin:6px 0;">103.339 M$ 2004</div>
+            <p style="font-size:14.5px; color:var(--mut); margin:0;">
+              Nacional: 67.566 M (+4,0%). Importado: 35.772 M (<mark>+12,6%</mark>, fuerte rebote tras años de restricciones comerciales).
+            </p>
+          </div>
+
+          <div class="box" style="margin:0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; font-family:var(--sans); color:var(--ink);">⚙️ Otra Maquinaria y Equipo</span>
+              <span class="tag tag-purple">+2,4% en 2025</span>
+            </div>
+            <div style="font-size:24px; font-weight:800; font-family:var(--sans); margin:6px 0;">575.059 M$ 2004</div>
+            <p style="font-size:14.5px; color:var(--mut); margin:0;">
+              27,0% del stock total. Nacional: 273.880 M (+0,3%). Importado: 301.178 M (+4,3%).
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SECTION 2: CONCEPTOS CLAVE -->
+      <section id="conceptos">
+        <h2>Conceptos clave y Marco Conceptual SCN 2025</h2>
+        <p class="lead">Hacé clic sobre cada concepto para desplegar los fundamentos económicos y metodológicos del informe.</p>
+
+        <details>
+          <summary>Productividad total de los factores (PTF) y residuo de Solow</summary>
+          <p>
+            Variable residual obtenida tras descontar la contribución ponderada de los factores primarios (capital y horas trabajadas). 
+            Captura progreso técnico, eficiencia de gestión, rendimientos de escala, aprendizaje práctico y, en el corto plazo, cambios en la utilización de la capacidad instalada 
+            (Solow, 1956, 1957; Jorgenson y Griliches, 1967).
+          </p>
+        </details>
+
+        <details>
+          <summary>Contabilidad del crecimiento económico (KLEMS+N)</summary>
+          <p>
+            Descompone formalmente el dinamismo del producto en el aporte de los factores:
+          </p>
+          <div class="formula-box">
+            $$\hat{Y} = \bar{s}_K \hat{K} + \bar{s}_L \hat{L}^H + \hat{A}$$
+          </div>
+          <div class="formula-explanation">
+            Donde $\hat{Y}$ es el crecimiento del VAB a precios básicos; $\hat{K}$ son los servicios de capital; $\hat{L}^H$ son los servicios laborales en horas efectivas; 
+            $\bar{s}_K$ y $\bar{s}_L$ son las participaciones factoriales en el ingreso; y $\hat{A}$ es la PTF residual.
+          </div>
+        </details>
+
+        <details>
+          <summary>Servicios de capital y costo de uso ex-post endógeno</summary>
+          <p>
+            Los servicios de capital se consideran proporcionales al stock físico de activos. El informe adopta el <strong>enfoque ex-post endógeno</strong>, 
+            donde la tasa interna de retorno se calibra de modo que el valor de los servicios agote exactamente el excedente bruto de explotación observado en la CGI. 
+            Se descarta el enfoque <em>ex-ante</em> de países desarrollados (tasa de interés + depreciación − ganancias esperadas por tenencia), 
+            ya que presupone ausencia de estanflación y mercados de crédito profundos y procíclicos, supuestos incompatibles con la economía argentina.
+          </p>
+        </details>
+
+        <details>
+          <summary>Innovaciones del Sistema de Cuentas Nacionales 2025 (SCN 2025)</summary>
+          <p>
+            El SCN 2025 (adoptado por Naciones Unidas, Eurostat, FMI, OCDE y Banco Mundial en marzo de 2025) introduce dos cambios estructurales:
+            <br>1. <strong>Servicios de capital en producción de no mercado (Gobierno e ISFLSH):</strong> se incorpora un rendimiento de capital en la suma de costos de edificios escolares, hospitales y rutas públicas.
+            <br>2. <strong>Agotamiento de recursos naturales:</strong> se registra como costo de producción afectando al Producto Interno Neto (PIN) pero no al PIB, 
+            alineando las cuentas a las recomendaciones de Stiglitz-Sen-Fitoussi (2009).
+          </p>
+        </details>
+
+        <details>
+          <summary>Valuación hedónica estratificada (VH) vs. Inventario permanente (PIM)</summary>
+          <p>
+            La <strong>Valuación Hedónica Estratificada</strong> estratifica el acervo físico real censado (edad, modelo, tamaño, potencia, ubicación) y lo valúa por su precio de mercado o costo de reposición. 
+            Es la opción jerárquicamente recomendada por el SCN 2025 (párrafo 14.32) y la OCDE. 
+            El <strong>PIM</strong>, en cambio, acumula flujos históricos de inversión con supuestos de retiros y vida útil que, según demuestran Miller (1983, 1990) y Coremberg (2004, 2009), 
+            pueden duplicar o reducir a la mitad la relación capital-producto y generar una severa <em>falacia de composición</em>.
+          </p>
+        </details>
+
+        <details>
+          <summary>Border/frontier price approach y Pricing to Market</summary>
+          <p>
+            Para la maquinaria importada sin mercado local de usados, se imputan precios de exportación del país de origen (Estados Unidos) 
+            asumiendo ley de precio único y pass-through del tipo de cambio, ajustado por flete y seguro CIF (Krugman, 1987).
+          </p>
+        </details>
+
+        <details>
+          <summary>Exclusión del valor del suelo urbano</summary>
+          <p>
+            Conforme a SCN 2025 (11.194) y Schreyer (2009), la tierra es un activo no producido. 
+            El valor del terreno se netea del costo de reposición edilicio para asegurar que las burbujas o fluctuaciones del valor de la tierra no contaminen los servicios de capital de las viviendas.
+          </p>
+        </details>
+      </section>
+
+      <!-- SECTION 3: METODO DE VALUACION -->
+      <section id="metodo">
+        <h2>Método: Jerarquía de Valuación</h2>
+        <p class="lead">
+          El stock de capital fijo se estima por tipo de activo según la naturaleza de los bienes. La disponibilidad de operativos estadísticos masivos 
+          permitió cubrir el <mark>82,8% del capital total</mark> con Valuación Hedónica directa.
+        </p>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>Incidencia del método en el stock 2024</h3>
+            <div class="ch"><canvas id="c7"></canvas></div>
+            <p class="cap">Cuadro 1. VH: 82,8% (Construcción, Maq. Agrícola y Automotor). PIM: 17,2% (Resto equipo durable).</p>
+          </div>
+
+          <div class="box">
+            <h3>Jerarquía de métodos según SCN 2025 (Tabla 2)</h3>
+            <p><span class="tag tag-blue">1. Precio de mercado (VH)</span><br><b>Cuándo:</b> Existen mercados activos y registros censales físicos estratificados.<br><b>Componentes:</b> Precios de activos comparables y atributos físicos reales.</p>
+            <p style="margin-top:12px;"><span class="tag tag-amber">2. Inventario Permanente (PIM)</span><br><b>Cuándo:</b> Mercados poco profundos y sin censos directos.<br><b>Componentes:</b> Inversión histórica acumulada, depreciación y retiros.</p>
+            <p style="margin-top:12px;"><span class="tag tag-purple">3. Valor presente de flujos futuros</span><br><b>Cuándo:</b> Recursos naturales del subsuelo o activos únicos sin mercado.</p>
+            <p style="margin-top:12px;"><span class="tag tag-green">4. Costo de reposición depreciado</span><br><b>Cuándo:</b> Bienes producidos por cuenta propia (suma de costos).</p>
+          </div>
+        </div>
+
+        <div class="note">
+          <b>Benchmarking Híbrido:</b> Para evitar la discrecionalidad del PIM pero contar con series temporales continuas, 
+          el nivel del stock se fija en el año base 2024 con la VH directa; luego la serie histórica 2004-2025 se calibra ajustando la tasa de declinación balanceada geométrica ($D/T$) 
+          e indexando por el Índice del Costo de la Construcción (ICC).
+        </div>
+      </section>
+
+      <!-- SECTION 4: PRODUCTIVIDAD PTF -->
+      <section id="ptf">
+        <h2>Productividad: 2016-2025</h2>
+        <p class="lead">
+          Durante la década 2016-2024 el producto creció por debajo de los servicios de capital y laborales: la PTF acumuló una caída promedio de −0,9% anual. 
+          En 2025 se verificó un punto de inflexión.
+        </p>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>Contribuciones al crecimiento del VAB (p.p.)</h3>
+            <div class="ch"><canvas id="c2"></canvas></div>
+            <p class="cap">Gráfico 4. En 2025 la PTF aportó +2,8 p.p. al 3,6% de crecimiento del VAB.</p>
+          </div>
+
+          <div class="box">
+            <h3>Productividad laboral y fuentes, 2016=100</h3>
+            <div class="ch"><canvas id="c3"></canvas></div>
+            <p class="cap">Cuadro 13. En 2020 el salto de K/L (125,8) refleja la fuerte caída de horas por pandemia, no mayor inversión.</p>
+          </div>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <strong class="negative">−0,8%</strong>
+            <span>VAB por hora, promedio 2016-2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="positive">+3,3%</strong>
+            <span>VAB por hora en 2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="neutral">+0,5 p.p.</strong>
+            <span>Aporte de intensidad de capital (K/L) en 2025</span>
+          </div>
+          <div class="kpi">
+            <strong class="positive">+2,8 p.p.</strong>
+            <span>Aporte de la PTF a la prod. laboral en 2025</span>
+          </div>
+        </div>
+
+        <h3>Cuadro 12 oficial: Evolución de Índices (2016=100)</h3>
+        <div class="tw">
+          <table id="tb"></table>
+        </div>
+      </section>
+
+      <!-- SECTION 5: STOCK DE CAPITAL -->
+      <section id="stock">
+        <h2>Stock de Capital de la Economía Argentina</h2>
+        <p class="lead">
+          Evolución del acervo físico acumulado a precios de 2004 y su valorización corriente indexada por costos de reposición.
+        </p>
+
+        <div class="box">
+          <h3>Stock de capital por tipología, 2004-2025 (Millones de pesos de 2004)</h3>
+          <div class="ch t"><canvas id="c4"></canvas></div>
+          <p class="cap">Cuadro 10. Total 2025: 2.127.939 millones (preliminar). Serie histórica apilada.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>Crecimiento anual por tipología (%)</h3>
+            <div class="ch t"><canvas id="c5"></canvas></div>
+            <p class="cap">Gráficos 7 y 8. Precios de 2004. Comparación promedio 2016-2025 vs. Año 2025.</p>
+          </div>
+
+          <div class="box">
+            <h3>Composición del valor corriente 2024</h3>
+            <div class="ch t"><canvas id="c6"></canvas></div>
+            <p class="cap">Cuadro 9. Total: $1.727.339.420 millones (1.727 billones de pesos).</p>
+          </div>
+        </div>
+
+        <p>
+          En 2025 el stock creció 1,5% en términos reales: <mark>equipo de transporte importado saltó +12,6%</mark>, 
+          maquinaria y equipo importado creció +4,3% y transporte nacional +4,0%. 
+          En contraste, la infraestructura de gobierno general <mark>descendió −0,2%</mark>, reflejando la contracción de la obra pública civil.
+        </p>
+      </section>
+
+      <!-- SECTION 6: APERTURA POR ACTIVOS -->
+      <section id="activos">
+        <h2>Apertura Detallada por Activos Fijos y Fuentes Censales</h2>
+        
+        <div class="grid2">
+          
+          <!-- Viviendas -->
+          <div class="box">
+            <h3>🏠 Viviendas (AN111)</h3>
+            <p>
+              <strong>17.794.949 unidades</strong> censadas en el Censo Nacional 2022. 
+              Estratificadas en <mark>575.444 tipologías de casas</mark>, <mark>93.840 de departamentos</mark> y <mark>190.369 deficitarias</mark>.
+            </p>
+            <p style="font-size:14.5px; color:var(--mut);">
+              Se estimaron 42 regresiones hedónicas sobre microdatos de la ENGHo 2017-2018 para determinar el valor de alquiler por atributos (piso, techo, ambientes, cloacas, piscina, aire acondicionado). 
+              Luego se convirtieron al costo de reposición venal de la edificación ($cr, j$), deduciendo rigurosamente la incidencia de la tierra urbana.
+            </p>
+          </div>
+
+          <!-- Edificación No Residencial -->
+          <div class="box">
+            <h3>🏢 Edificación No Residencial (AN1121)</h3>
+            <p>
+              Abarca <strong>715.377 establecimientos de empresas</strong> y <strong>1.840.212 cuentapropistas</strong> (CNE 2020-2021 y mapa productivo).
+            </p>
+            <p style="font-size:14.5px; color:var(--mut);">
+              Existe una fuerte asimetría: las empresas representan el 28% de los locales físicos pero explican el <mark>66% del valor hedónico</mark>. 
+              El 36,2% tiene entre 10 y 20 años de edad. Se aplicó una depreciación geométrica balanceada:
+            </p>
+            <div class="formula-box" style="font-size:16px;">
+              $$p_t = p_0 [1 - (0,88/50)]^t$$
+            </div>
+            <p style="font-size:13.5px; color:var(--p); margin:0;">
+              *Los valores contables de las grandes empresas (ENGE) apenas alcanzaban entre 0,2% y 10,8% del verdadero valor venal de los inmuebles.
+            </p>
+          </div>
+
+          <!-- Infraestructura -->
+          <div class="box" style="grid-column: 1 / -1;">
+            <h3>🛣️ Capital de Infraestructura Económica y Social</h3>
+            <p>
+              Relevamiento físico directo en base al Área de Pensamiento Estratégico de CAMARCO (2025):
+            </p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin:14px 0;">
+              <div style="background:var(--bg); padding:10px 14px; border-radius:6px; border:1px solid var(--ln);">
+                <b style="font-family:var(--sans); color:var(--k);">Red Vial Nacional/Prov.</b>
+                <div style="font-size:18px; font-weight:800; font-family:var(--sans);">621.181 km</div>
+                <span style="font-size:12px; color:var(--mut);">40.950 km nac. (91% asfaltada), 198.791 km prov.</span>
+              </div>
+              <div style="background:var(--bg); padding:10px 14px; border-radius:6px; border:1px solid var(--ln);">
+                <b style="font-family:var(--sans); color:var(--l);">Vías Urbanas</b>
+                <div style="font-size:18px; font-weight:800; font-family:var(--sans);">158.928 km</div>
+                <span style="font-size:12px; color:var(--mut);">2.228 aglomerados (Ross-Heidecke)</span>
+              </div>
+              <div style="background:var(--bg); padding:10px 14px; border-radius:6px; border:1px solid var(--ln);">
+                <b style="font-family:var(--sans); color:var(--p);">Energía y Ductos</b>
+                <div style="font-size:18px; font-weight:800; font-family:var(--sans);">27.569 pozos</div>
+                <span style="font-size:12px; color:var(--mut);">42.528 km gasoductos (100 años vida útil)</span>
+              </div>
+              <div style="background:var(--bg); padding:10px 14px; border-radius:6px; border:1px solid var(--ln);">
+                <b style="font-family:var(--sans); color:var(--ink);">Agua y Saneamiento</b>
+                <div style="font-size:18px; font-weight:800; font-family:var(--sans);">565.125 manzanas</div>
+                <span style="font-size:12px; color:var(--mut);">84% agua potable, 59% red cloacal</span>
+              </div>
+              <div style="background:var(--bg); padding:10px 14px; border-radius:6px; border:1px solid var(--ln);">
+                <b style="font-family:var(--sans); color:var(--k);">Red Ferroviaria</b>
+                <div style="font-size:18px; font-weight:800; font-family:var(--sans);">32.621 km vías</div>
+                <span style="font-size:12px; color:var(--mut);">55,8% operativa, 218 estaciones</span>
+              </div>
+              <div style="background:var(--bg); padding:10px 14px; border-radius:6px; border:1px solid var(--ln);">
+                <b style="font-family:var(--sans); color:var(--l);">Escuelas y Salud</b>
+                <div style="font-size:18px; font-weight:800; font-family:var(--sans);">47.000 escuelas</div>
+                <span style="font-size:12px; color:var(--mut);">Y 1.302 hospitales con internación</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maquinaria Agropecuaria -->
+          <div class="box">
+            <h3>🚜 Maquinaria Agropecuaria</h3>
+            <p>
+              <strong>194.145 tractores</strong> y <strong>22.802 cosechadoras</strong> (CNA 2018). 
+              Aunque el total de unidades cayó por mayor escala de las explotaciones (de 92 a 253 ha promedio), las unidades de gran porte crecieron a tasas exponenciales:
+            </p>
+            <div class="ch" style="height:250px"><canvas id="c8"></canvas></div>
+            <p class="cap">Tasa de variación anual del parque de tractores por potencia (CNA 2002-2018). >200 CV creció +6,8% anual.</p>
+            <div class="note" style="margin-top:10px; font-size:14px;">
+              <b>Fenómeno de contratistas:</b> Poseen el <strong>59,4% de las cosechadoras</strong> y levantan el <strong>61,2% de la cosecha de cereales</strong> del país.
+            </div>
+          </div>
+
+          <!-- Equipo de Transporte -->
+          <div class="box">
+            <h3>🚛 Equipo Automotor Destinado a Capital</h3>
+            <p>
+              Parque físico asegurado afectado a procesos productivos (SSN y AFAC/DNRPA):
+            </p>
+            <ul style="font-size:14.5px; color:var(--mut); line-height:1.7; padding-left:20px;">
+              <li><strong>Pickups:</strong> 66,8% (vehículo de capital predominante).</li>
+              <li><strong>Autos por aplicación:</strong> 10,9% (Uber, Cabify, Didi imputados a capital).</li>
+              <li><strong>Camiones de carga:</strong> 10,3% y acoplados 4,8%.</li>
+              <li><strong>Motos de delivery:</strong> 3,5% (plataformas digitales).</li>
+              <li><strong>Pasajeros y colectivos:</strong> 2,1%; Taxis y remises: 1,7%.</li>
+            </ul>
+            <p style="font-size:13.5px; color:var(--mut); margin-top:8px;">
+              Muestra ACARA de <strong>8.405 modelos</strong> con una antigüedad media nacional de <strong>14,3 años</strong>.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 7: TABLAS Y SERIES OFICIALES -->
+      <section id="tablas">
+        <h2>Explorador Interactivo de Series y Tablas Oficiales</h2>
+        <p class="lead">
+          Navegá las matrices completas de datos numéricos del informe técnico.
+        </p>
+
+        <div class="tab-nav">
+          <button class="t-btn active" onclick="showTab(event, 'p-c9')">Cuadro 9: Precios Corrientes 2024</button>
+          <button class="t-btn" onclick="showTab(event, 'p-c10')">Cuadro 10: Precios de 2004 (2004-2025)</button>
+          <button class="t-btn" onclick="showTab(event, 'p-c11')">Cuadro 11: Precios Corrientes (2004-2025)</button>
+          <button class="t-btn" onclick="showTab(event, 'p-econo')">Modelos Econométricos</button>
+        </div>
+
+        <!-- PANE CUADRO 9 -->
+        <div id="p-c9" class="t-pane active">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="font-size:13.5px; color:var(--mut);">Stock de capital 2024 por rama CIIU y método de valuación (Millones de pesos corrientes).</span>
+            <input type="text" class="search-input" placeholder="Filtrar fila..." onkeyup="filterRows('tb-c9', this.value)">
+          </div>
+          <div class="tw" style="max-height: 500px; overflow-y:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>CIIU</th>
+                  <th>Tipo de Activo</th>
+                  <th>Nacional</th>
+                  <th>Importado</th>
+                  <th>Total (M$)</th>
+                  <th>Método</th>
+                </tr>
+              </thead>
+              <tbody id="tb-c9">
+                
+    <tr class="level-0">
+      <td class="font-mono">AN11</td>
+      <td class="font-mono">-</td>
+      <td>Stock de capital total</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">1.727.339.420</td>
+      <td style="text-align:center;"><span class="tag tag-purple">Mixto</span></td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN111</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Viviendas</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">547.723.373</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Casas</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">286.738.537</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Departamentos</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">249.154.466</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deficitarias</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">11.830.371</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN112</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Otros edificios y estructuras</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">748.956.111</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1121_S11</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edificación no residencial privada</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">145.964.525</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">A</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agricultura, ganadería, caza y silvicultura</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">9.254.700</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">B</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pesca</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">76.991</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">C</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Explotación de minas y canteras</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">1.048.380</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">D</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Industria manufacturera</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">12.818.797</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">E</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Electricidad, gas y agua</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">1.365.472</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">F</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Construcción</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">7.268.187</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">G</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comercio mayorista, minorista y reparaciones</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">32.758.751</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">H</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hoteles y restaurantes</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">6.232.279</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">I</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transporte, almacenamiento y comunicaciones</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">14.520.910</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">J</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intermediación financiera</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">3.239.887</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">K</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actividades inmobiliarias, empresariales y de alquiler</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">29.809.589</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">M</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enseñanza privada</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">4.550.001</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">N</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Servicios sociales y de salud privados</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">8.938.777</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">O</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otras actividades de servicios comunitarias y personales</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">14.081.803</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1122_S11</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Infraestructura empresas (públicas, concesionadas y privadas)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">296.253.788</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pozos de hidrocarburos (petróleo y gas)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">57.598.555</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Minería (litio, cobre, oro, plata)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">3.950.414</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Electricidad (generación, transporte y distribución)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">111.243.085</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ductos (oleoductos, poliductos y gasoductos)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">27.432.002</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agua y saneamiento (redes y plantas depuradoras)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">57.396.678</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ferrocarriles y subterráneos</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">16.158.277</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Infraestructura de transporte automotor</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">352.194</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Infraestructura portuaria (marítima y fluvial)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">7.332.056</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aeropuertos</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">5.894.920</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIC y telecomunicaciones (fibra, antenas, satélites)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">8.895.607</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1121_S13</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Infraestructura de gobierno general (No mercado)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">306.737.798</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Infraestructura vial (rutas nacionales, provinciales y caminos)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">116.114.573</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Infraestructura y equipamiento urbano (calles y pluviales)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">104.424.292</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Educación pública (edificios escolares)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">43.440.102</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salud pública (hospitales con internación)</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">15.546.483</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edificación administración pública nacional y provincial</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right;">-</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">27.212.348</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN113</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Maquinaria y equipo</td>
+      <td class="font-mono" style="text-align:right;">335.590.656</td>
+      <td class="font-mono" style="text-align:right;">95.069.280</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">430.659.936</td>
+      <td style="text-align:center;"><span class="tag tag-purple">Mixto</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1131</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipo de transporte</td>
+      <td class="font-mono" style="text-align:right;">63.375.548</td>
+      <td class="font-mono" style="text-align:right;">12.986.131</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">76.361.680</td>
+      <td style="text-align:center;"><span class="tag tag-purple">Mixto</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">34</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vehículos automotores, remolques y semirremolques</td>
+      <td class="font-mono" style="text-align:right;">55.767.458</td>
+      <td class="font-mono" style="text-align:right;">8.019.591</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">63.787.049</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">35</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otros tipos de equipo de transporte (ferroviario, aéreo, naval)</td>
+      <td class="font-mono" style="text-align:right;">7.608.090</td>
+      <td class="font-mono" style="text-align:right;">4.966.540</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">12.574.630</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1132</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipo TIC</td>
+      <td class="font-mono" style="text-align:right;">4.531.555</td>
+      <td class="font-mono" style="text-align:right;">11.642.552</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">16.174.106</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">30</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maquinaria de oficina, contabilidad e informática</td>
+      <td class="font-mono" style="text-align:right;">638.368</td>
+      <td class="font-mono" style="text-align:right;">4.217.795</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">4.856.164</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">32</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipo y aparatos de radio, TV y comunicaciones</td>
+      <td class="font-mono" style="text-align:right;">3.893.187</td>
+      <td class="font-mono" style="text-align:right;">7.424.756</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">11.317.943</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1139</td>
+      <td class="font-mono">-</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otra maquinaria y equipo</td>
+      <td class="font-mono" style="text-align:right;">267.683.553</td>
+      <td class="font-mono" style="text-align:right;">70.440.597</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">338.124.150</td>
+      <td style="text-align:center;"><span class="tag tag-purple">Mixto</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">28</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Productos elaborados de metal, excepto maquinaria</td>
+      <td class="font-mono" style="text-align:right;">20.223.758</td>
+      <td class="font-mono" style="text-align:right;">2.258.477</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">22.482.236</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">29</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maquinaria y equipo n.c.p.</td>
+      <td class="font-mono" style="text-align:right;">155.093.752</td>
+      <td class="font-mono" style="text-align:right;">37.718.614</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">192.812.365</td>
+      <td style="text-align:center;"><span class="tag tag-purple">Mixto</span></td>
+    </tr>
+    
+    <tr class="level-4">
+      <td class="font-mono">-</td>
+      <td class="font-mono">29211/13</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· De los cuales: Maquinaria agropecuaria y forestal</td>
+      <td class="font-mono" style="text-align:right;">67.624.018</td>
+      <td class="font-mono" style="text-align:right;">2.865.548</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">70.489.566</td>
+      <td style="text-align:center;"><span class="tag tag-blue">VH</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">31</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maquinaria y aparatos eléctricos n.c.p.</td>
+      <td class="font-mono" style="text-align:right;">76.918.135</td>
+      <td class="font-mono" style="text-align:right;">18.767.866</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">95.686.001</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">33</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Instrumentos médicos, ópticos, de precisión y relojes</td>
+      <td class="font-mono" style="text-align:right;">8.519.402</td>
+      <td class="font-mono" style="text-align:right;">11.192.038</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">19.711.440</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+    <tr class="level-3">
+      <td class="font-mono">-</td>
+      <td class="font-mono">36</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Muebles; Industrias manufactureras n.c.p.</td>
+      <td class="font-mono" style="text-align:right;">6.928.507</td>
+      <td class="font-mono" style="text-align:right;">503.601</td>
+      <td class="font-mono" style="text-align:right; font-weight:700;">7.432.108</td>
+      <td style="text-align:center;"><span class="tag tag-amber">PIM</span></td>
+    </tr>
+    
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE CUADRO 10 -->
+        <div id="p-c10" class="t-pane">
+          <p style="font-size:13.5px; color:var(--mut); margin-bottom:10px;">
+            Stock de capital a precios constantes de 2004 para años seleccionados (Millones de pesos de 2004).
+          </p>
+          <div class="tw" style="max-height: 500px; overflow-y:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Tipo de Activo</th>
+                  <th>2004</th>
+                  <th>2008</th>
+                  <th>2012</th>
+                  <th>2016</th>
+                  <th>2020</th>
+                  <th>2022</th>
+                  <th>2024</th>
+                  <th>2025</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+    <tr class="level-0">
+      <td class="font-mono">AN11</td>
+      <td>Total Stock de Capital</td>
+      <td class="font-mono" style="text-align:right;">1.247.343</td><td class="font-mono" style="text-align:right;">1.454.683</td><td class="font-mono" style="text-align:right;">1.675.462</td><td class="font-mono" style="text-align:right;">1.867.113</td><td class="font-mono" style="text-align:right;">1.962.992</td><td class="font-mono" style="text-align:right;">2.042.942</td><td class="font-mono" style="text-align:right;">2.096.898</td><td class="font-mono" style="text-align:right;">2.127.939</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN111</td>
+      <td>Viviendas</td>
+      <td class="font-mono" style="text-align:right;">386.045</td><td class="font-mono" style="text-align:right;">437.539</td><td class="font-mono" style="text-align:right;">490.878</td><td class="font-mono" style="text-align:right;">547.797</td><td class="font-mono" style="text-align:right;">588.912</td><td class="font-mono" style="text-align:right;">614.020</td><td class="font-mono" style="text-align:right;">632.945</td><td class="font-mono" style="text-align:right;">641.962</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN112</td>
+      <td>Otros Edificios y Estructuras</td>
+      <td class="font-mono" style="text-align:right;">511.620</td><td class="font-mono" style="text-align:right;">597.764</td><td class="font-mono" style="text-align:right;">671.348</td><td class="font-mono" style="text-align:right;">729.911</td><td class="font-mono" style="text-align:right;">766.350</td><td class="font-mono" style="text-align:right;">788.660</td><td class="font-mono" style="text-align:right;">805.590</td><td class="font-mono" style="text-align:right;">807.579</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1121</td>
+      <td>Edif. No Residencial Privada</td>
+      <td class="font-mono" style="text-align:right;">132.458</td><td class="font-mono" style="text-align:right;">143.895</td><td class="font-mono" style="text-align:right;">153.788</td><td class="font-mono" style="text-align:right;">160.777</td><td class="font-mono" style="text-align:right;">165.158</td><td class="font-mono" style="text-align:right;">166.921</td><td class="font-mono" style="text-align:right;">168.675</td><td class="font-mono" style="text-align:right;">169.610</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1122</td>
+      <td>Infraestructura Empresas</td>
+      <td class="font-mono" style="text-align:right;">145.371</td><td class="font-mono" style="text-align:right;">192.835</td><td class="font-mono" style="text-align:right;">224.032</td><td class="font-mono" style="text-align:right;">245.364</td><td class="font-mono" style="text-align:right;">256.538</td><td class="font-mono" style="text-align:right;">270.074</td><td class="font-mono" style="text-align:right;">282.451</td><td class="font-mono" style="text-align:right;">284.067</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1121/22</td>
+      <td>Infraestructura Gob. General</td>
+      <td class="font-mono" style="text-align:right;">233.790</td><td class="font-mono" style="text-align:right;">261.034</td><td class="font-mono" style="text-align:right;">293.527</td><td class="font-mono" style="text-align:right;">323.770</td><td class="font-mono" style="text-align:right;">344.654</td><td class="font-mono" style="text-align:right;">351.664</td><td class="font-mono" style="text-align:right;">354.464</td><td class="font-mono" style="text-align:right;">353.901</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN113</td>
+      <td>Maquinaria y Equipo Total</td>
+      <td class="font-mono" style="text-align:right;">349.678</td><td class="font-mono" style="text-align:right;">419.380</td><td class="font-mono" style="text-align:right;">513.236</td><td class="font-mono" style="text-align:right;">589.405</td><td class="font-mono" style="text-align:right;">607.730</td><td class="font-mono" style="text-align:right;">640.262</td><td class="font-mono" style="text-align:right;">658.363</td><td class="font-mono" style="text-align:right;">678.397</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN113_S1</td>
+      <td>Maquinaria y Equipo Nacional</td>
+      <td class="font-mono" style="text-align:right;">250.918</td><td class="font-mono" style="text-align:right;">261.736</td><td class="font-mono" style="text-align:right;">288.724</td><td class="font-mono" style="text-align:right;">315.966</td><td class="font-mono" style="text-align:right;">312.644</td><td class="font-mono" style="text-align:right;">326.637</td><td class="font-mono" style="text-align:right;">337.921</td><td class="font-mono" style="text-align:right;">341.447</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1131_S1</td>
+      <td>Equipo Transporte Nacional</td>
+      <td class="font-mono" style="text-align:right;">28.052</td><td class="font-mono" style="text-align:right;">42.264</td><td class="font-mono" style="text-align:right;">55.894</td><td class="font-mono" style="text-align:right;">61.953</td><td class="font-mono" style="text-align:right;">55.230</td><td class="font-mono" style="text-align:right;">58.934</td><td class="font-mono" style="text-align:right;">64.959</td><td class="font-mono" style="text-align:right;">67.566</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1132/39_S1</td>
+      <td>Otra Maq. Nacional</td>
+      <td class="font-mono" style="text-align:right;">222.866</td><td class="font-mono" style="text-align:right;">219.473</td><td class="font-mono" style="text-align:right;">232.830</td><td class="font-mono" style="text-align:right;">254.013</td><td class="font-mono" style="text-align:right;">257.414</td><td class="font-mono" style="text-align:right;">267.703</td><td class="font-mono" style="text-align:right;">272.962</td><td class="font-mono" style="text-align:right;">273.880</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN113_S2</td>
+      <td>Maquinaria y Equipo Importado</td>
+      <td class="font-mono" style="text-align:right;">98.760</td><td class="font-mono" style="text-align:right;">157.643</td><td class="font-mono" style="text-align:right;">224.512</td><td class="font-mono" style="text-align:right;">273.439</td><td class="font-mono" style="text-align:right;">295.087</td><td class="font-mono" style="text-align:right;">313.626</td><td class="font-mono" style="text-align:right;">320.442</td><td class="font-mono" style="text-align:right;">336.951</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1131_S2</td>
+      <td>Equipo Transporte Importado</td>
+      <td class="font-mono" style="text-align:right;">13.130</td><td class="font-mono" style="text-align:right;">20.924</td><td class="font-mono" style="text-align:right;">28.440</td><td class="font-mono" style="text-align:right;">37.197</td><td class="font-mono" style="text-align:right;">36.136</td><td class="font-mono" style="text-align:right;">33.334</td><td class="font-mono" style="text-align:right;">31.763</td><td class="font-mono" style="text-align:right;">35.772</td>
+    </tr>
+    
+    <tr class="level-2">
+      <td class="font-mono">AN1132/39_S2</td>
+      <td>Otra Maq. Importado</td>
+      <td class="font-mono" style="text-align:right;">85.629</td><td class="font-mono" style="text-align:right;">136.720</td><td class="font-mono" style="text-align:right;">196.072</td><td class="font-mono" style="text-align:right;">236.242</td><td class="font-mono" style="text-align:right;">258.951</td><td class="font-mono" style="text-align:right;">280.291</td><td class="font-mono" style="text-align:right;">288.679</td><td class="font-mono" style="text-align:right;">301.178</td>
+    </tr>
+    
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE CUADRO 11 -->
+        <div id="p-c11" class="t-pane">
+          <p style="font-size:13.5px; color:var(--mut); margin-bottom:10px;">
+            Stock de capital a precios corrientes 2004-2025 indexado por el ICC (Millones de pesos).
+          </p>
+          <div class="tw" style="max-height: 500px; overflow-y:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Tipo de Activo</th>
+                  <th>2004</th>
+                  <th>2008</th>
+                  <th>2012</th>
+                  <th>2016</th>
+                  <th>2020</th>
+                  <th>2022</th>
+                  <th>2024</th>
+                  <th>2025</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+    <tr class="level-0">
+      <td class="font-mono">AN11</td>
+      <td>Total Stock de Capital</td>
+      <td class="font-mono" style="text-align:right;">1.247.343</td><td class="font-mono" style="text-align:right;">2.610.763</td><td class="font-mono" style="text-align:right;">5.776.873</td><td class="font-mono" style="text-align:right;">18.931.370</td><td class="font-mono" style="text-align:right;">82.147.733</td><td class="font-mono" style="text-align:right;">230.392.449</td><td class="font-mono" style="text-align:right;">554.782.201</td><td class="font-mono" style="text-align:right;">1.727.339.420</td><td class="font-mono" style="text-align:right;">2.348.104.611</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN111</td>
+      <td>Viviendas</td>
+      <td class="font-mono" style="text-align:right;">386.045</td><td class="font-mono" style="text-align:right;">805.304</td><td class="font-mono" style="text-align:right;">1.877.192</td><td class="font-mono" style="text-align:right;">5.961.593</td><td class="font-mono" style="text-align:right;">25.966.165</td><td class="font-mono" style="text-align:right;">70.655.115</td><td class="font-mono" style="text-align:right;">176.552.544</td><td class="font-mono" style="text-align:right;">547.723.373</td><td class="font-mono" style="text-align:right;">759.201.224</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN112</td>
+      <td>Otros Edificios y Estructuras</td>
+      <td class="font-mono" style="text-align:right;">511.620</td><td class="font-mono" style="text-align:right;">1.152.142</td><td class="font-mono" style="text-align:right;">2.628.995</td><td class="font-mono" style="text-align:right;">8.738.496</td><td class="font-mono" style="text-align:right;">36.331.773</td><td class="font-mono" style="text-align:right;">96.658.131</td><td class="font-mono" style="text-align:right;">238.664.124</td><td class="font-mono" style="text-align:right;">748.956.111</td><td class="font-mono" style="text-align:right;">1.047.387.576</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1121</td>
+      <td>Edif. No Residencial Privada</td>
+      <td class="font-mono" style="text-align:right;">132.458</td><td class="font-mono" style="text-align:right;">264.843</td><td class="font-mono" style="text-align:right;">588.110</td><td class="font-mono" style="text-align:right;">1.749.711</td><td class="font-mono" style="text-align:right;">7.282.109</td><td class="font-mono" style="text-align:right;">19.207.542</td><td class="font-mono" style="text-align:right;">47.471.732</td><td class="font-mono" style="text-align:right;">145.964.525</td><td class="font-mono" style="text-align:right;">200.585.489</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1122</td>
+      <td>Infraestructura Empresas</td>
+      <td class="font-mono" style="text-align:right;">145.371</td><td class="font-mono" style="text-align:right;">406.858</td><td class="font-mono" style="text-align:right;">918.391</td><td class="font-mono" style="text-align:right;">3.465.249</td><td class="font-mono" style="text-align:right;">13.853.260</td><td class="font-mono" style="text-align:right;">36.984.694</td><td class="font-mono" style="text-align:right;">90.634.481</td><td class="font-mono" style="text-align:right;">296.253.788</td><td class="font-mono" style="text-align:right;">428.269.220</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1121/22</td>
+      <td>Infraestructura Gob. General</td>
+      <td class="font-mono" style="text-align:right;">233.790</td><td class="font-mono" style="text-align:right;">480.441</td><td class="font-mono" style="text-align:right;">1.122.493</td><td class="font-mono" style="text-align:right;">3.523.536</td><td class="font-mono" style="text-align:right;">15.196.405</td><td class="font-mono" style="text-align:right;">40.465.896</td><td class="font-mono" style="text-align:right;">100.557.912</td><td class="font-mono" style="text-align:right;">306.737.798</td><td class="font-mono" style="text-align:right;">418.532.867</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN113</td>
+      <td>Maquinaria y Equipo Total</td>
+      <td class="font-mono" style="text-align:right;">349.678</td><td class="font-mono" style="text-align:right;">653.317</td><td class="font-mono" style="text-align:right;">1.270.686</td><td class="font-mono" style="text-align:right;">4.231.281</td><td class="font-mono" style="text-align:right;">19.849.794</td><td class="font-mono" style="text-align:right;">63.079.202</td><td class="font-mono" style="text-align:right;">139.565.533</td><td class="font-mono" style="text-align:right;">430.659.936</td><td class="font-mono" style="text-align:right;">541.515.811</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN113_S1</td>
+      <td>Maquinaria y Equipo Nacional</td>
+      <td class="font-mono" style="text-align:right;">250.918</td><td class="font-mono" style="text-align:right;">469.600</td><td class="font-mono" style="text-align:right;">937.987</td><td class="font-mono" style="text-align:right;">2.865.378</td><td class="font-mono" style="text-align:right;">13.855.071</td><td class="font-mono" style="text-align:right;">50.169.985</td><td class="font-mono" style="text-align:right;">110.984.918</td><td class="font-mono" style="text-align:right;">335.590.656</td><td class="font-mono" style="text-align:right;">415.921.272</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1131_S1</td>
+      <td>Equipo Transporte Nacional</td>
+      <td class="font-mono" style="text-align:right;">28.052</td><td class="font-mono" style="text-align:right;">69.890</td><td class="font-mono" style="text-align:right;">178.902</td><td class="font-mono" style="text-align:right;">667.054</td><td class="font-mono" style="text-align:right;">2.310.423</td><td class="font-mono" style="text-align:right;">7.514.291</td><td class="font-mono" style="text-align:right;">20.818.136</td><td class="font-mono" style="text-align:right;">63.375.548</td><td class="font-mono" style="text-align:right;">82.552.856</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1132/39_S1</td>
+      <td>Otra Maq. Nacional</td>
+      <td class="font-mono" style="text-align:right;">222.866</td><td class="font-mono" style="text-align:right;">399.710</td><td class="font-mono" style="text-align:right;">759.085</td><td class="font-mono" style="text-align:right;">2.198.324</td><td class="font-mono" style="text-align:right;">11.544.648</td><td class="font-mono" style="text-align:right;">42.655.694</td><td class="font-mono" style="text-align:right;">90.166.782</td><td class="font-mono" style="text-align:right;">272.215.108</td><td class="font-mono" style="text-align:right;">333.368.416</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN113_S2</td>
+      <td>Maquinaria y Equipo Importado</td>
+      <td class="font-mono" style="text-align:right;">98.760</td><td class="font-mono" style="text-align:right;">183.717</td><td class="font-mono" style="text-align:right;">332.699</td><td class="font-mono" style="text-align:right;">1.365.904</td><td class="font-mono" style="text-align:right;">5.994.723</td><td class="font-mono" style="text-align:right;">12.909.217</td><td class="font-mono" style="text-align:right;">28.580.615</td><td class="font-mono" style="text-align:right;">95.069.280</td><td class="font-mono" style="text-align:right;">125.594.539</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1131_S2</td>
+      <td>Equipo Transporte Importado</td>
+      <td class="font-mono" style="text-align:right;">13.130</td><td class="font-mono" style="text-align:right;">25.389</td><td class="font-mono" style="text-align:right;">53.338</td><td class="font-mono" style="text-align:right;">213.023</td><td class="font-mono" style="text-align:right;">879.950</td><td class="font-mono" style="text-align:right;">1.838.369</td><td class="font-mono" style="text-align:right;">3.992.175</td><td class="font-mono" style="text-align:right;">12.986.131</td><td class="font-mono" style="text-align:right;">19.954.651</td>
+    </tr>
+    
+    <tr class="level-1">
+      <td class="font-mono">AN1132/39_S2</td>
+      <td>Otra Maq. Importado</td>
+      <td class="font-mono" style="text-align:right;">85.629</td><td class="font-mono" style="text-align:right;">158.328</td><td class="font-mono" style="text-align:right;">279.361</td><td class="font-mono" style="text-align:right;">1.152.881</td><td class="font-mono" style="text-align:right;">5.114.773</td><td class="font-mono" style="text-align:right;">11.070.849</td><td class="font-mono" style="text-align:right;">24.588.440</td><td class="font-mono" style="text-align:right;">82.083.149</td><td class="font-mono" style="text-align:right;">105.639.888</td>
+    </tr>
+    
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE ECONOMETRIA -->
+        <div id="p-econo" class="t-pane">
+          <div class="grid2">
+            
+            <div class="box" style="margin:0;">
+              <div style="display:flex; justify-content:space-between;">
+                <b style="font-family:var(--sans); color:var(--k);">Cuadro 14: Regresión Casas</b>
+                <span class="tag tag-blue">N = 1.448 · R² = 0,432</span>
+              </div>
+              <div class="tw" style="margin-top:10px;">
+                <table>
+                  <thead><tr><th>Variable</th><th>Coef.</th><th>t</th><th>p-val</th></tr></thead>
+                  <tbody>
+                    <tr><td>Localidad</td><td>+0,006</td><td>15,49</td><td>0,000</td></tr>
+                    <tr><td>Material pisos</td><td>+0,215</td><td>3,81</td><td>0,000</td></tr>
+                    <tr><td>Cielorraso</td><td>+0,162</td><td>3,76</td><td>0,000</td></tr>
+                    <tr><td>Ambientes</td><td>+0,114</td><td>8,82</td><td>0,000</td></tr>
+                    <tr><td>Piscina</td><td>+0,248</td><td>2,86</td><td>0,004</td></tr>
+                    <tr><td>Aire acond.</td><td>+0,119</td><td>3,97</td><td>0,000</td></tr>
+                    <tr><td>Celular</td><td>+0,261</td><td>3,19</td><td>0,001</td></tr>
+                    <tr><td>Constante</td><td>+4,850</td><td>9,06</td><td>0,000</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="box" style="margin:0;">
+              <div style="display:flex; justify-content:space-between;">
+                <b style="font-family:var(--sans); color:var(--l);">Cuadro 15: Departamentos</b>
+                <span class="tag tag-green">N = 1.606 · R² = 0,377</span>
+              </div>
+              <div class="tw" style="margin-top:10px;">
+                <table>
+                  <thead><tr><th>Variable</th><th>Coef.</th><th>t</th><th>p-val</th></tr></thead>
+                  <tbody>
+                    <tr><td>Localidad</td><td>+0,006</td><td>17,64</td><td>0,000</td></tr>
+                    <tr><td>Material pisos</td><td>+0,284</td><td>3,38</td><td>0,001</td></tr>
+                    <tr><td>Cochera</td><td>+0,110</td><td>4,34</td><td>0,000</td></tr>
+                    <tr><td>Aire acond.</td><td>+0,117</td><td>5,64</td><td>0,000</td></tr>
+                    <tr><td>Ambientes</td><td>+0,068</td><td>6,40</td><td>0,000</td></tr>
+                    <tr><td>Cloacas</td><td>+0,043</td><td>1,87</td><td>0,062</td></tr>
+                    <tr><td>Paredes ext.</td><td>-0,084</td><td>-2,55</td><td>0,011</td></tr>
+                    <tr><td>Constante</td><td>+6,186</td><td>6,48</td><td>0,000</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SECTION 8: LECTURA CRITICA -->
+      <section id="lectura">
+        <h2>Lectura Crítica e Implicancias de Política Económica</h2>
+        <p class="cap" style="font-size:15px; margin-bottom:18px;">
+          Esta sección sintetiza análisis interpretativo propio a partir de la evidencia del documento, independiente de la posición oficial del INDEC.
+        </p>
+
+        <div class="note">
+          <b>1. El rebote de 2025 no compensa la década perdida:</b> 
+          El índice de PTF pasa de 100 en 2016 a 90,0 en 2024 y repunta a 92,5 en 2025: la economía aún opera un <mark>7,5% por debajo</mark> del nivel de eficiencia técnica de 2016. 
+          El salto del +2,8% se produce con horas trabajadas casi estables (+0,2 p.p.), lo que en parte refleja mayor utilización de capacidad instalada ociosa y no necesariamente progreso técnico genuino.
+        </div>
+
+        <div class="note">
+          <b>2. Profundización de capital sin retorno:</b> 
+          Entre 2016 y 2025 los servicios de capital crecieron un 14,0% acumulado y las horas trabajadas un 10,7%, mientras el VAB apenas avanzó 3,1%. 
+          Esto evidencia que la economía argentina incrementó su dotación de activos por unidad de producto sin lograr traducir dicha acumulación en mayor riqueza neta.
+        </div>
+
+        <div class="note">
+          <b>3. La naturaleza residual de la PTF:</b> 
+          Al computarse como residuo, la PTF aglutina progreso técnico, economías de escala, shocks institucionales y errores de medición factorial. 
+          Como fundamenta Coremberg (2026), es imperativo avanzar hacia la segunda fase para aislar los efectos de ciclo de utilización y computar el capital natural.
+        </div>
+
+        <div class="note">
+          <b>4. Calidad del dato y efecto precio nominal:</b> 
+          Las cifras de 2024 son provisorias y 2025 preliminares. El salto de las series corrientes entre 2024 y 2025 (+36%) obedece casi con exclusividad a la indexación con el Índice del Costo de la Construcción (ICC).
+        </div>
+
+        <div class="note">
+          <b>5. Señales sectoriales de inversión:</b> 
+          En 2025 la inversión en activos durables importados (transporte +12,6% y maquinaria +4,3%) lideró el dinamismo, mientras la infraestructura de gobierno general se contrajo (−0,2%), 
+          marcando un retiro de la obra pública financiada por el Estado compensado por la inversión privada transable.
+        </div>
+      </section>
+
+      <!-- SECTION 9: REFERENCIAS ACADEMICAS -->
+      <section id="refs">
+        <h2>Referencias Académicas Clasificadas</h2>
+        <p class="cap" style="font-size:15px; margin-bottom:20px;">
+          Selección de la literatura científica citada en el documento de trabajo, organizada por campo temático.
+        </p>
+
+        <h3>Teoría del crecimiento y medición de productividad</h3>
+        <p class="ref">Solow, R. M. (1956). A contribution to the theory of economic growth. <i>QJE</i>, 70(1), 65-94. <a href="https://doi.org/10.2307/1884513" target="_blank">doi</a></p>
+        <p class="ref">Solow, R. M. (1957). Technical change and the aggregate production function. <i>REStat</i>, 39(3), 312-320. <a href="https://doi.org/10.2307/1926047" target="_blank">doi</a></p>
+        <p class="ref">Jorgenson, D. W. y Griliches, Z. (1967). The explanation of productivity change. <i>Review of Economic Studies</i>, 34(3), 249-283. <a href="https://doi.org/10.2307/2296675" target="_blank">doi</a></p>
+        <p class="ref">Jorgenson, D. W., Gollop, F. M. y Fraumeni, B. M. (1987). <i>Productivity and U.S. economic growth</i>. Harvard University Press.</p>
+        <p class="ref">Hulten, C. R. (1986). Productivity change, capacity utilization, and the sources of efficiency growth. <i>Journal of Econometrics</i>, 33(1-2), 31-50. <a href="https://doi.org/10.1016/0304-4076(86)90026-6" target="_blank">doi</a></p>
+        <p class="ref">Timmer, M. P., O’Mahony, M. y van Ark, B. (2020). Growth and productivity accounts from EU KLEMS: An overview. <i>National Institute Economic Review</i>, 200(1), 64-78. <a href="https://doi.org/10.1177/0027950107080390" target="_blank">doi</a></p>
+
+        <h3>Medición del capital y perfiles de depreciación</h3>
+        <p class="ref">Hulten, C. R. y Wykoff, F. C. (1981). The estimation of economic depreciation using vintage asset prices. <i>Journal of Econometrics</i>, 15(3), 367-396. <a href="https://doi.org/10.1016/0304-4076(81)90101-9" target="_blank">doi</a></p>
+        <p class="ref">Miller, E. (1983). A difficulty in measuring productivity with a perpetual inventory capital stock measure. <i>Oxford Bulletin of Economics and Statistics</i>, 45(3), 297-306. <a href="https://doi.org/10.1111/j.1468-0084.1983.mp45003005.x" target="_blank">doi</a></p>
+        <p class="ref">Miller, E. (1990). Can a perpetual inventory capital stock be used for production function parameter estimation? <i>Review of Income and Wealth</i>, 36(1), 67-82. <a href="https://doi.org/10.1111/j.1475-4991.1990.tb00262.x" target="_blank">doi</a></p>
+        <p class="ref">Bureau of Economic Analysis (2003, 2013). <i>Fixed assets and consumer durable goods in the United States, 1925-97</i>. U.S. Government Printing Office.</p>
+        <p class="ref">OCDE (2009). <i>Measuring capital: OECD manual</i> (2.ª ed.). Organización para la Cooperación y el Desarrollo Económicos, París. <a href="https://www.oecd.org" target="_blank">link</a></p>
+
+        <h3>Marcos estadísticos internacionales</h3>
+        <p class="ref">United Nations (2025). <i>System of National Accounts 2025 (SCN 2025)</i>. Comisión de Estadística de las Naciones Unidas, Nueva York. <a href="https://unstats.un.org" target="_blank">link</a></p>
+        <p class="ref">Stiglitz, J. E., Sen, A. y Fitoussi, J.-P. (2009). <i>Report by the Commission on the Measurement of Economic Performance and Social Progress</i>. Comisión Europea. <a href="https://ec.europa.eu" target="_blank">link</a></p>
+        <p class="ref">World Bank (2024). <i>The Changing Wealth of Nations: Revisiting Comprehensive Wealth</i>. Banco Mundial, Washington D.C.</p>
+
+        <h3>Estudios aplicados a la Argentina</h3>
+        <p class="ref">Coremberg, A. A. (2004). <i>Capital services in Argentina: Methodology of estimation and its contribution to productivity growth</i> [WP-EC 2004-02]. IVIE.</p>
+        <p class="ref">Coremberg, A. A. (2009). <i>Midiendo las fuentes del crecimiento en una economía inestable: Argentina</i> [Estudios y Perspectivas n.º 41]. CEPAL. <a href="https://repositorio.cepal.org" target="_blank">link</a></p>
+        <p class="ref">Coremberg, A. A. (2017). Argentina was not the productivity and economic growth champion of Latin America. <i>International Productivity Monitor</i>, 33, 77-90.</p>
+        <p class="ref">Coremberg, A. A. (2026). Accounting Argentina growth failure: Adjusting productivity by utilization effects and natural capital. <i>Revista de Análisis Económico</i>, 41(1), 75-109. <a href="https://www.scielo.cl" target="_blank">link</a></p>
+        <p class="ref">INDEC (2004). <i>Estimación del stock de capital fijo de la República Argentina 1990-2003: fuentes, métodos y resultados</i>. DNCN.</p>
+        <p class="ref">APE-CAMARCO (2025). <i>El stock de capital de infraestructura en Argentina. Serie Fotos del Futuro 2034</i>. Cámara Argentina de la Construcción.</p>
+        <p class="ref">Bernhold, C. y Palmisano, T. (2021). Capital concentration in and through class differentiation: A case study from Pampean agribusiness. <i>Journal of Agrarian Change</i>, 22(2), 341–361. <a href="https://doi.org/10.1111/joac.12445" target="_blank">doi</a></p>
+
+        <h3>Microeconomía y precios</h3>
+        <p class="ref">Akerlof, G. A. (1970). The market for 'lemons': Quality uncertainty and the market mechanism. <i>QJE</i>, 84(3), 488-500. <a href="https://doi.org/10.2307/1879431" target="_blank">doi</a></p>
+        <p class="ref">Krugman, P. (1987). Pricing to market when the exchange rate changes. En Arndt y Richardson (Eds.), <i>Real-financial linkages among open economies</i>. MIT Press.</p>
+        <p class="ref">Schreyer, P. (2009). User costs and bubbles in land markets. <i>Journal of Housing Economics</i>, 18(3), 267-272. <a href="https://doi.org/10.1016/j.jhe.2009.07.005" target="_blank">doi</a></p>
+
+        <p class="cap" style="margin-top:28px;">
+          Fuente de todos los datos oficiales: INDEC, Dirección Nacional de Cuentas Nacionales, Documento de Trabajo Nº 52 (octubre de 2026), 
+          elaborado con el apoyo del Banco Interamericano de Desarrollo (BID) y el consultor Ariel Coremberg.
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- SCRIPTING & CHART.JS INITIALIZATION -->
+  <script>
+    // Scroll progress bar
+    window.onscroll = function() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("progress-bar").style.width = scrolled + "%";
+    };
+
+    // Tab Navigation for Tables
+    function showTab(evt, paneId) {
+      document.querySelectorAll('.t-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(paneId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // Filter Table Rows
+    function filterRows(tbodyId, query) {
+      query = query.toLowerCase();
+      document.querySelectorAll('#' + tbodyId + ' tr').forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(query) ? '' : 'none';
+      });
+    }
+
+    // Charts Configuration with Claude's elegant palette
+    const Y = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
+    const C = {
+      y: '#16233B',  // VAB / Ink
+      k: '#1F5FA8',  // Capital Blue
+      l: '#0E8A8A',  // Labor Teal
+      p: '#D2552F',  // PTF Terracotta
+      g: '#9AA8BB',  // Grey neutral
+      k_light: '#7FB0DF'
+    };
+
+    const D = {
+      VAB: [100.0, 102.6, 99.8, 98.2, 88.5, 97.7, 102.6, 101.0, 99.6, 103.1],
+      K:   [100.0, 102.7, 104.7, 105.4, 105.1, 106.9, 109.4, 111.6, 112.3, 114.0],
+      L:   [100.0, 101.8, 102.2, 103.1, 83.6, 99.7, 106.7, 109.6, 110.4, 110.7],
+      PTF: [100.0, 100.4, 96.8, 94.5, 96.7, 95.6, 95.6, 91.9, 90.0, 92.5]
+    };
+
+    Chart.defaults.font.family = "'Bricolage Grotesque', system-ui, sans-serif";
+    Chart.defaults.color = '#5B6B82';
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 6;
+
+    const mk = (id, cfg) => {
+      cfg.options = Object.assign({ responsive: true, maintainAspectRatio: false }, cfg.options || {});
+      new Chart(document.getElementById(id), cfg);
+    };
+
+    const ln = (label, data, color, width, dash) => ({
+      label: label,
+      data: data,
+      borderColor: color,
+      backgroundColor: color,
+      borderWidth: width || 2,
+      borderDash: dash || [],
+      pointRadius: 3,
+      tension: 0.2
+    });
+
+    // 1. Chart c1: Fuentes del Crecimiento
+    mk('c1', {
+      type: 'line',
+      data: {
+        labels: Y,
+        datasets: [
+          ln('Y: VAB a precios básicos', D.VAB, C.y, 3),
+          ln('K: Servicios de capital', D.K, C.k, 2.5),
+          ln('L: Servicios laborales (horas)', D.L, C.l, 2.5),
+          ln('PTF: Productividad total factores', D.PTF, C.p, 3.5)
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { min: 80, max: 120 } }
+      }
+    });
+
+    // 2. Chart c2: Contribuciones factoriales
+    mk('c2', {
+      type: 'bar',
+      data: {
+        labels: ['VAB total', 'Servicios Capital', 'Servicios Laborales', 'PTF (Residuo)'],
+        datasets: [
+          { label: '2016-2025 (prom. anual)', data: [0.3, 0.6, 0.6, -0.9], backgroundColor: C.g },
+          { label: 'Año 2025 (prel.)', data: [3.6, 0.6, 0.2, 2.8], backgroundColor: C.k }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 3. Chart c3: Productividad laboral
+    mk('c3', {
+      type: 'line',
+      data: {
+        labels: Y,
+        datasets: [
+          ln('VAB por hora (Y/L)', [100.0, 100.7, 97.7, 95.3, 105.9, 98.0, 96.1, 92.1, 90.2, 93.1], C.y, 3),
+          ln('Capital por hora (K/L)', [100.0, 100.9, 102.5, 102.2, 125.8, 107.3, 102.5, 101.8, 101.7, 102.9], C.k, 2.5),
+          ln('PTF', D.PTF, C.p, 3.5)
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { min: 85, max: 135 } }
+      }
+    });
+
+    // 4. Chart c4: Stock Apilado 2004-2025
+    const yrs = []; for (let i = 2004; i <= 2025; i++) yrs.push(i);
+    const S = {
+      'Viviendas': [386045, 397526, 411198, 424205, 437539, 449861, 462145, 477361, 490878, 505659, 520932, 535254, 547797, 560119, 572859, 582772, 588912, 601623, 614020, 624340, 632945, 641962],
+      'Edif. no residencial': [132458, 135358, 138346, 141087, 143895, 146701, 148970, 151716, 153788, 155676, 157440, 158991, 160777, 162434, 164056, 165180, 165158, 166000, 166921, 167873, 168675, 169610],
+      'Infra. empresas': [145371, 155203, 164481, 177820, 192835, 193781, 202654, 211840, 224032, 233090, 239650, 246210, 245364, 246517, 251288, 255948, 256538, 262936, 270074, 280079, 282451, 284067],
+      'Infra. gobierno': [233790, 237835, 244907, 253463, 261034, 268869, 278185, 287636, 293527, 301116, 308544, 317502, 323770, 334440, 340774, 346167, 344654, 347234, 351664, 355601, 354464, 353901],
+      'Maquinaria y equipo': [349678, 355559, 366926, 391152, 419380, 425840, 449339, 487980, 513236, 538896, 555253, 572512, 589405, 613926, 625806, 617558, 607730, 618796, 640262, 656068, 658363, 678397]
+    };
+    const pal = ['#1F5FA8', '#7FB0DF', '#0E8A8A', '#9AA8BB', '#D2552F'];
+
+    mk('c4', {
+      type: 'bar',
+      data: {
+        labels: yrs,
+        datasets: Object.keys(S).map((k, i) => ({ label: k, data: S[k], backgroundColor: pal[i] }))
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => v.toLocaleString('es-AR') } } }
+      }
+    });
+
+    // 5. Chart c5: Variación por Tipología
+    mk('c5', {
+      type: 'bar',
+      data: {
+        labels: ['Maq. importada', 'Viviendas', 'Infra. empresas', 'Infra. gobierno', 'Transp. nacional', 'Maq. nacional', 'Edif. no resid.', 'Transp. importado', 'Stock total'],
+        datasets: [
+          { label: '2016-2025 (prom. anual)', data: [3.1, 2.0, 1.8, 1.1, 1.1, 0.9, 0.7, -0.5, 1.6], backgroundColor: C.g },
+          { label: 'Año 2025', data: [4.3, 1.4, 0.6, -0.2, 4.0, 0.3, 0.6, 12.6, 1.5], backgroundColor: C.k }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+
+    // 6. Chart c6: Composición Corriente 2024
+    mk('c6', {
+      type: 'doughnut',
+      data: {
+        labels: ['Viviendas (31,7%)', 'Edif. no residencial (8,5%)', 'Infra. empresas (17,2%)', 'Infra. gobierno (17,8%)', 'Maquinaria y equipo (24,9%)'],
+        datasets: [{
+          data: [547723, 145965, 296254, 306738, 430660],
+          backgroundColor: pal,
+          borderColor: '#fff',
+          borderWidth: 2
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 7. Chart c7: Incidencia Métodos
+    mk('c7', {
+      type: 'doughnut',
+      data: {
+        labels: ['Valuación Hedónica (82,8%)', 'Inventario Permanente (17,2%)'],
+        datasets: [{
+          data: [82.8, 17.2],
+          backgroundColor: [C.k, C.p],
+          borderColor: '#fff',
+          borderWidth: 2
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 8. Chart c8: Tractores por potencia
+    mk('c8', {
+      type: 'bar',
+      data: {
+        labels: ['≤15 CV', '16-50 CV', '51-75 CV', '76-100 CV', '101-140 CV', '141-200 CV', '>200 CV'],
+        datasets: [{
+          label: 'Var. Anual (%)',
+          data: [-4.1, -3.8, -2.9, -1.5, -0.4, 3.1, 6.8],
+          backgroundColor: [-4.1, -3.8, -2.9, -1.5, -0.4, 3.1, 6.8].map(v => v < 0 ? C.p : C.l)
+        }]
+      },
+      options: { plugins: { legend: { display: false } } }
+    });
+
+    // Cuadro 12 Table injection
+    document.getElementById('tb').innerHTML = '<tr><th>Concepto</th>' + Y.map(y => '<th>' + y + '</th>').join('') + '</tr>' +
+      [['Valor Agregado Bruto (precios básicos)', 'VAB'],
+       ['Servicios de Capital (K)', 'K'],
+       ['Servicios Laborales (Horas L)', 'L'],
+       ['Productividad Total Factores (PTF)', 'PTF']].map(r => 
+         '<tr ' + (r[1] === 'PTF' ? 'style="font-weight:700; color:var(--p); background:rgba(210,85,47,0.05);"' : '') + '><td>' + r[0] + '</td>' + 
+         D[r[1]].map(v => '<td>' + v.toFixed(1).replace('.', ',') + '</td>').join('') + '</tr>'
+      ).join('');
+
+    // IntersectionObserver for Sticky Nav Link Highlight
+    const navLinks = [...document.querySelectorAll('#nav a')];
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    document.querySelectorAll('section').forEach(s => io.observe(s));
+  </script>
+</body>
+</html>
