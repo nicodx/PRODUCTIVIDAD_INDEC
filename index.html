@@ -25,19 +25,19 @@
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
       
-      --bg: #F5F7FA;
-      --sf: #FFFFFF;
-      --ink: #16233B;
-      --mut: #5B6B82;
-      --ln: #DCE3EC;
+      --bg: #F8F6F1;    /* Subtle warm paper / natural stone background (rests eyes, eliminates blue glare) */
+      --sf: #FFFFFF;    /* Clean surface cards */
+      --ink: #211E1B;   /* Deep warm charcoal ink (avoids cold navy blue eye strain) */
+      --mut: #6A635B;   /* Muted warm stone / taupe */
+      --ln: #E6E1D8;    /* Warm subtle border */
       
-      --k: #1F5FA8;     /* Capital / Primary Blue */
-      --k-light: #EBF3FC;
-      --l: #0E8A8A;     /* Labor / Teal Green */
-      --l-light: #E6F7F7;
-      --p: #D2552F;     /* PTF / Terracotta Accent */
-      --p-light: #FDF1ED;
-      --hl: #FFE9A8;    /* Warm Yellow Highlighter */
+      --k: #2B5876;     /* Capital / Warm Slate Blue (comfortable, replaces harsh electric blue) */
+      --k-light: #EBF0F5;
+      --l: #227056;     /* Labor / Warm Botanical Green (replaces cold cyan-teal) */
+      --l-light: #EBF4F0;
+      --p: #C64F28;     /* PTF / Terracotta Accent (warm, rich) */
+      --p-light: #FAF0EB;
+      --hl: #FCE5A2;    /* Warm Amber/Honey Highlighter */
       
       --sans: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
       --ser: 'Source Serif 4', Georgia, serif;
@@ -46,8 +46,8 @@
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 16px;
-      --shadow-sm: 0 1px 3px rgba(22, 35, 59, 0.05);
-      --shadow-md: 0 4px 8px rgba(22, 35, 59, 0.07);
+      --shadow-sm: 0 1px 3px rgba(35, 30, 24, 0.05);
+      --shadow-md: 0 4px 10px rgba(35, 30, 24, 0.07);
     }
 
     html {
@@ -55,8 +55,15 @@
       scroll-padding-top: 30px;
     }
 
+    ::selection {
+      background: #E8DFC8;
+      color: var(--ink);
+    }
+
     * {
       box-sizing: border-box;
+      scrollbar-color: #D3CDC2 transparent;
+      scrollbar-width: thin;
     }
 
     body {
@@ -86,7 +93,7 @@
       max-width: 1260px;
       margin: 0 auto;
       background: var(--bg);
-      box-shadow: 0 0 40px rgba(0,0,0,0.03);
+      box-shadow: 0 0 40px rgba(35, 30, 24, 0.04);
       min-height: 100vh;
     }
 
@@ -338,7 +345,7 @@
     /* Claude's Terracotta Callout Note */
     .note {
       border-left: 4px solid var(--p);
-      background: rgba(210, 85, 47, 0.04);
+      background: rgba(198, 79, 40, 0.05);
       padding: 10px 16px 10px 18px;
       margin: 18px 0;
       border-radius: 0 8px 8px 0;
@@ -353,7 +360,7 @@
 
     .note-info {
       border-left: 4px solid var(--k);
-      background: rgba(31, 95, 168, 0.04);
+      background: rgba(43, 88, 118, 0.05);
     }
     .note-info b {
       color: var(--k);
@@ -370,7 +377,7 @@
     }
     details[open] {
       box-shadow: var(--shadow-sm);
-      border-color: #cbd5e1;
+      border-color: #D3CDC2;
     }
     summary {
       cursor: pointer;
@@ -427,7 +434,7 @@
     th {
       font-weight: 700;
       color: var(--ink);
-      background: #fafbfc;
+      background: #F4F1EA;
       font-size: 12.5px;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -438,14 +445,14 @@
     }
 
     tbody tr:hover {
-      background: #f8fafc;
+      background: #F8F5EE;
     }
 
-    tr.level-0 { font-weight: 800; background: #f1f5f9; color: var(--ink); }
-    tr.level-1 { font-weight: 700; background: #fafbfc; color: var(--k); }
+    tr.level-0 { font-weight: 800; background: #ECE6DB; color: var(--ink); }
+    tr.level-1 { font-weight: 700; background: #F4F1EA; color: var(--k); }
     tr.level-2 { font-weight: 600; color: var(--ink); }
     tr.level-3 { color: var(--mut); }
-    tr.level-4 { color: #8c9ba5; font-style: italic; }
+    tr.level-4 { color: #8A837A; font-style: italic; }
 
     /* Method Badges */
     .tag {
@@ -457,10 +464,10 @@
       border: 1px solid var(--ln);
       background: var(--bg);
     }
-    .tag-blue { background: #e0f2fe; color: var(--k); border-color: #bae6fd; }
-    .tag-amber { background: #fef3c7; color: #b45309; border-color: #fde68a; }
-    .tag-purple { background: #f3e8ff; color: #7e22ce; border-color: #e9d5ff; }
-    .tag-green { background: #dcfce7; color: var(--l); border-color: #bbf7d0; }
+    .tag-blue { background: #EAF0F6; color: var(--k); border-color: #D1DDE8; }
+    .tag-amber { background: #FAF2DF; color: #9A5808; border-color: #F3E0B5; }
+    .tag-purple { background: #F4EEF7; color: #6E3B82; border-color: #E2D3E8; }
+    .tag-green { background: #E9F3ED; color: var(--l); border-color: #CBE3D4; }
 
     /* Interactive Table Tabs */
     .tab-nav {
@@ -480,8 +487,9 @@
       border-bottom: 2px solid transparent;
       border-radius: 6px 6px 0 0;
       white-space: nowrap;
+      transition: all 0.15s ease;
     }
-    .t-btn:hover { color: var(--ink); background: #f1f5f9; }
+    .t-btn:hover { color: var(--ink); background: #ECE7DD; }
     .t-btn.active {
       color: var(--k);
       border-bottom-color: var(--k);
@@ -500,9 +508,11 @@
       color: var(--ink);
       outline: none;
       width: 220px;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .search-input:focus {
       border-color: var(--k);
+      box-shadow: 0 0 0 3px rgba(43, 88, 118, 0.12);
     }
 
     /* References */
@@ -1937,15 +1947,15 @@
       });
     }
 
-    // Charts Configuration with Claude's elegant palette
+    // Charts Configuration with warm editorial palette
     const Y = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
     const C = {
-      y: '#16233B',  // VAB / Ink
-      k: '#1F5FA8',  // Capital Blue
-      l: '#0E8A8A',  // Labor Teal
-      p: '#D2552F',  // PTF Terracotta
-      g: '#9AA8BB',  // Grey neutral
-      k_light: '#7FB0DF'
+      y: '#211E1B',      // VAB / Ink - warm charcoal
+      k: '#2B5876',      // Capital Slate Blue (replaces harsh electric blue)
+      l: '#227056',      // Labor Sage/Forest Green (replaces cold cyan-teal)
+      p: '#C64F28',      // PTF Terracotta
+      g: '#9E968B',      // Warm Stone grey neutral (replaces cold blue-slate)
+      k_light: '#5E88AA' // Muted warm slate light
     };
 
     const D = {
@@ -1956,9 +1966,13 @@
     };
 
     Chart.defaults.font.family = "'Bricolage Grotesque', system-ui, sans-serif";
-    Chart.defaults.color = '#5B6B82';
+    Chart.defaults.color = '#6A635B';
+    Chart.defaults.borderColor = 'rgba(70, 60, 50, 0.08)';
     Chart.defaults.plugins.tooltip.padding = 10;
     Chart.defaults.plugins.tooltip.cornerRadius = 6;
+    Chart.defaults.plugins.tooltip.backgroundColor = '#211E1B';
+    Chart.defaults.plugins.tooltip.titleColor = '#F8F6F1';
+    Chart.defaults.plugins.tooltip.bodyColor = '#F8F6F1';
 
     const mk = (id, cfg) => {
       cfg.options = Object.assign({ responsive: true, maintainAspectRatio: false }, cfg.options || {});
@@ -2033,7 +2047,7 @@
       'Infra. gobierno': [233790, 237835, 244907, 253463, 261034, 268869, 278185, 287636, 293527, 301116, 308544, 317502, 323770, 334440, 340774, 346167, 344654, 347234, 351664, 355601, 354464, 353901],
       'Maquinaria y equipo': [349678, 355559, 366926, 391152, 419380, 425840, 449339, 487980, 513236, 538896, 555253, 572512, 589405, 613926, 625806, 617558, 607730, 618796, 640262, 656068, 658363, 678397]
     };
-    const pal = ['#1F5FA8', '#7FB0DF', '#0E8A8A', '#9AA8BB', '#D2552F'];
+    const pal = ['#2B5876', '#5E88AA', '#227056', '#9E968B', '#C64F28'];
 
     mk('c4', {
       type: 'bar',
@@ -2113,7 +2127,7 @@
        ['Servicios de Capital (K)', 'K'],
        ['Servicios Laborales (Horas L)', 'L'],
        ['Productividad Total Factores (PTF)', 'PTF']].map(r => 
-         '<tr ' + (r[1] === 'PTF' ? 'style="font-weight:700; color:var(--p); background:rgba(210,85,47,0.05);"' : '') + '><td>' + r[0] + '</td>' + 
+         '<tr ' + (r[1] === 'PTF' ? 'style="font-weight:700; color:var(--p); background:rgba(198,79,40,0.06);"' : '') + '><td>' + r[0] + '</td>' + 
          D[r[1]].map(v => '<td>' + v.toFixed(1).replace('.', ',') + '</td>').join('') + '</tr>'
       ).join('');
 
